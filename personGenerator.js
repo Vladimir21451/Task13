@@ -1,5 +1,21 @@
  var ranGen;
-const personGenerator = {
+var months = [
+    [0,'0'],
+    [31, 'января'],
+    [28, 'февраля'],
+    [31, 'марта'],
+    [30, 'апреля'],
+    [31, 'мая'],
+    [30, 'июня'],
+    [31, 'июля'],
+    [31, 'августа'],
+    [30, 'сентября'],
+    [31, 'октября'],
+    [30, 'ноября'],
+    [31, 'декабря']
+
+];
+var personGenerator = {
     surnameJson: `{  
         "count": 15,
         "list": {
@@ -36,9 +52,9 @@ const personGenerator = {
             "id_10": "Андрей"
         }
     }`,
-    nameJobJson: `{
+    nameJobJson:`{
         "count": 10,
-        "list": {     
+        "list":{     
             "id_1": "Врач",
             "id_2": "Учитель",
             "id_3": "Продвец",
@@ -53,7 +69,7 @@ const personGenerator = {
     }`, 
     firstNameFemaleJson: `{
         "count": 10,
-        "list": {     
+        "list":{     
             "id_1": "Александра",
             "id_2": "Марфа",
             "id_3": "Ирина",
@@ -66,9 +82,9 @@ const personGenerator = {
             "id_10": "Авдотья"
         }
     }`,
-    lastNameFemaleJson: `{
+    lastNameFemaleJson:`{
         "count": 10,
-        "list": {     
+        "list":{     
             "id_1": "Ивановна",
             "id_2": "Спиридоновна",
             "id_3": "Кузьминична",
@@ -82,7 +98,7 @@ const personGenerator = {
         }
     }`,
 
-    lastNameMaleJson: `{  
+    lastNameMaleJson:`{  
         "count": 15,
         "list": {
             "id_1": "Иванович",
@@ -115,9 +131,9 @@ const personGenerator = {
     },
 
     randomFirstName: function() {
-       if(ranGen == 1){
+       if(ranGen === 1){
                 return this.randomValue(this.firstNameMaleJson);}
-        else if(ranGen == 2){
+        else if(ranGen === 2){
                 return this.randomValue(this.firstNameFemaleJson); }
         else{
                 alert("Вы не задали пол");
@@ -126,10 +142,13 @@ const personGenerator = {
     },
 
     randomLastName: function(){
-        if(ranGen == 1){
-                return this.randomValue(this.lastNameMaleJson);}
-        else if(ranGen == 2){
-                return this.randomValue(this.lastNameFemaleJson);}
+       let namejson = (ranGen === 1)?
+            this.lastNameMaleJson:this.lastNameFemaleJson;
+            return this.randomValue(namejson);
+       // if(ranGen == 1){
+       //         return this.randomValue(this.lastNameMaleJson);}
+       // else if(ranGen == 2){
+       //        return this.randomValue(this.lastNameFemaleJson);}
       // else {
         //        alert("Вы не задали пол");
         //      return;
@@ -158,38 +177,38 @@ const personGenerator = {
         return this.person;
     }
 };
-let gen = document.getElementById('makeGender').addEventListener('click', function(){
+let gen = document.getElementsByClassName('command__makeGender')[0].addEventListener('click', function(){
    goGender(); 
-})
-let birthday = document.getElementById('makeYear').addEventListener('click', () =>{
+});
+let birthday = document.getElementsByClassName('command__makeYear')[0].addEventListener('click', () =>{
    goDayMonthYear();
-})
+});
 
-let fstName = document.getElementById('makeFirstName').addEventListener('click', () =>{
+let fstName = document.getElementsByClassName('command__makeFirstName')[0].addEventListener('click', () =>{
 gofirstlastName();
-})
+});
 
- document.getElementById('makeJob').addEventListener('click', () =>{
+ document.getElementsByClassName('command__makeJob')[0].addEventListener('click', () =>{
      goProfi();
-})
+});
 
-document.getElementById('makeAll').addEventListener('click', () =>{
+document.getElementsByClassName('command__makeAll')[0].addEventListener('click', () =>{
    // alert(ranGen);
     goGender();
     gofirstlastName();
     goDayMonthYear();
     goProfi();
-})
+});
  function  goGender(){
     let gender = document.getElementById('genderOutput');
     ranGen = personGenerator.randomIntNumber(2, 1);
-    if(ranGen == 1){
+    if(ranGen === 1){
          gender.innerHTML =personGenerator.GENDER_MALE;
     }
     else{
          gender.innerHTML = personGenerator.GENDER_FEMALE;
     }  
-    gender.style.backgroundColor ='lightyellow';    
+    gender.style.backgroundColor = 'lightyellow';    
  }
 
  function goDayMonthYear(){
@@ -199,9 +218,11 @@ document.getElementById('makeAll').addEventListener('click', () =>{
    // alert(god);
     let month = personGenerator.randomIntNumber(12,1);
    // alert(month);
-    let bdmax = 30;
-    let monthtext = '';
-    switch(month){
+    let bdmax = months[month][0];
+    let monthtext = months[month][1];
+    if(god % 4 === 0) bdmax = 29;
+ // Оператор switch заменен массивом и строками 274, 275
+    /*  switch(month){
         case 1:
             bdmax = 31;
             monthtext = 'января';
@@ -250,7 +271,7 @@ document.getElementById('makeAll').addEventListener('click', () =>{
             bdmax = 31;
             monthtext = 'декабря';
             break;
-    }
+    }*/
     //alert(monthtext);
     let birthd =personGenerator.randomIntNumber(bdmax,1);
     bday.innerHTML= 'Дата рождения:' + '  ' + birthd + ' ' + monthtext + ' ' + god;
@@ -260,7 +281,7 @@ document.getElementById('makeAll').addEventListener('click', () =>{
  function gofirstlastName(){
     let namePerson = personGenerator.getPerson();
     //alert(namePerson.lastName);
-    if(ranGen == 2){namePerson.secondName = namePerson.secondName + 'а'}
+    if(ranGen === 2){namePerson.secondName = namePerson.secondName + 'а';}
     let fno = document.getElementById('firstNameOutput'); //innerText =namePerson.secondName + ' ' + namePerson.firstName + ' ' + namePerson.lastName;
      fno.innerText = namePerson.secondName + ' ' + namePerson.firstName + ' ' + namePerson.lastName;
      fno.style.backgroundColor = 'lightyellow';
@@ -268,7 +289,7 @@ document.getElementById('makeAll').addEventListener('click', () =>{
 
  function goProfi(){
     if (ranGen != 1 && ranGen != 2){return;}
-    let lstName = document.getElementById('nameJob');innerText = 'Профессия:' + '  ' + personGenerator.randomJob();
+    let lstName = document.getElementById('nameJob');  //innerText = 'Профессия:' + '  ' + personGenerator.randomJob();
     lstName.innerText ='Профессия:' + '  ' + personGenerator.randomJob();
     document.getElementById('crdheader').style.background = 'lightsalmon';
    document.body.style.backgroundImage = "url(zastavka.jpg)";
